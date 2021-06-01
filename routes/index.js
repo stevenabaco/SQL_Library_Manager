@@ -14,15 +14,25 @@ function asyncHandler(cb) {
 	};
 }
 
-/* GET home page. */
+/* GET home page with list of books */
 router.get(
 	'/',
 	asyncHandler(async (req, res, next) => {
 		// res.render('index', { title: 'Express' });
-		const books = await Book.findAll();
+		const books = await Book.findAll({order: [['createdAt', 'DESC']]});
 		// res.render('index', { Books, title: 'Wizardry Books' })
-		console.log(books.map(book => book.toJSON()));
+    console.log(books.map(book => book.toJSON()));
 	})
 );
+
+/*GET generated error route - create and throw 500 server error for testing*/
+router.get('/error', (req, res, next) => {
+  // Log out a custom error handler
+  console.log('Custom error route was called');
+  const err = new Error();
+  err.message = `Custom 500 error thrown`
+  err.status = 500;
+  throw err;
+})
 
 module.exports = router;
