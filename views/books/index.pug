@@ -1,0 +1,25 @@
+extends ../layout
+
+block content 
+  div.subheader
+  h1 Welcome to My Library
+  p 
+  a(class="button" href="/books/new") Create New Book
+  br
+  br
+  table
+    thead
+      tr 
+        th Title
+        th Author
+        th Genre
+        th Year
+    tbody
+
+      each book in books 
+        tr 
+          td 
+            a(href=`/books/${book.id}/edit`)= book.title
+          td= book.author 
+          td= book.genre
+          td= book.year
