@@ -4,7 +4,7 @@ block content
   h1 Update A Book
     br
     br
-    form(action=`/books/${book.id}/edit` method="post")
+    form(action=`/books/${book.id}` method="POST")
       p 
         label(for="title") Title 
         input#title(type="text", name="title", value=`${book.title}`)

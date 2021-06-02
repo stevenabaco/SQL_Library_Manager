@@ -24,26 +24,24 @@ router.get(
 	})
 );
 
+// /* GET - Details of individual book */
+
+// router.get('/:id', asyncHandler(async (req, res) => {
+//   const book = await Book.findByPk(req.params.id);
+//   if (book) {
+// 		res.render('books/update_book', { book, title: 'Update a book' });
+// 	} else {
+// 		res.sendStatus(404);
+// 	}
+// }))
+
 /* GET - create a new book form */
 router.get('/new', (req, res) => {
 	res.render('books/new_book', { title: 'Add a New Book' });
 });
 
-/* GET - edit book form - */
-router.get(
-	'/:id/edit',
-	asyncHandler(async (req, res) => {
-		const book = await Book.findByPk(req.params.id);
-		if (book) {
-			res.render('books/update_book', { book, title: 'Update a book' });
-		} else {
-			res.sendStatus(404);
-		}
-	})
-);
-
 /* POST - add a book to library */
-router.post('/', asyncHandler(async (req, res) => {
+router.post('/new', asyncHandler(async (req, res) => {
   let book;
   try {
     book = await Book.create(req.body);
@@ -62,10 +60,25 @@ router.post('/', asyncHandler(async (req, res) => {
   }
 }))
 
+/* GET - edit book form - */
+router.get(
+	'/:id',
+	asyncHandler(async (req, res) => {
+		const book = await Book.findByPk(req.params.id);
+		if (book) {
+			res.render('books/update_book', { book, title: 'Update a book' });
+		} else {
+			res.sendStatus(404);
+		}
+	})
+);
+
+
+
 
 /* POST - update a book */
 router.post(
-	'/:id/edit',
+	'/:id',
 	asyncHandler(async (req, res) => {
 		let book;
 		try {
@@ -92,4 +105,16 @@ router.post(
 	})
 );
 
+/* POST - delete individual article */
+router.post(
+  '/:id/delete', asyncHandler(async (req, res) => {
+    const book = await Book.findByPk(req.params.id);
+    if (book) {
+      await book.destroy();
+      res.redirect('/');
+    } else {
+      res.sendStatus(404);
+    }
+  })
+)
 module.exports = router;
