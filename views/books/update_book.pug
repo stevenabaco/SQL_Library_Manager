@@ -1,10 +1,15 @@
 extends ../layout
 
 block content 
-  h1 Update A Book
-    br
-    br
+  .form__container
+    h1 Update Book
     form(action=`/books/${book.id}` method="POST")
+      if errors
+        h2.error Oooops! 
+        ul.error
+          each error in errors 
+            li
+              h2= error.message 
       p 
         label(for="title") Title 
         input#title(type="text", name="title", value=`${book.title}`)
@@ -19,9 +24,11 @@ block content
         input#year(type="text", name="year", value=`${book.year}`)
       p 
         input(type="submit", value="Update the book")
-
+        
     form(method=`post`, action=`/books/${book.id}/delete`, onsubmit=`return confirm('Do you really want to delete this book?');`) 
-      p 
-        a(class="button", href="/") Cancel
-      P 
-        input(type="submit", value="Delete this book")
+        p 
+          a(class="button", href="/") Cancel
+      
+        P 
+          input(type="submit", value="Delete this book")
+    

@@ -1,25 +1,29 @@
 extends ../layout
 
 block content 
-  div.subheader
-  h1 Welcome to My Library
-  p 
-  a(class="button" href='/books/new') Create New Book
-  br
-  br
-  table
-    thead
-      tr 
-        th Title
-        th Author
-        th Genre
-        th Year
-    tbody
-
-      each book in books 
+  .container
+    h1.title Welcome to My Library
+    .header 
+      form(action="/books/search" method="get")
+        label(for="search" class="search-feature")
+          input(id="search" type="search" name="query")
+          input(class="button" id="submit" type="submit" value="Search")
+      a#indexCreateNewBook(class="button" href='/books/new') Create New Book
+    br
+    br
+    table
+      thead
         tr 
-          td 
-            a(href=`/books/${book.id}`)= book.title
-          td= book.author 
-          td= book.genre
-          td= book.year
+          th Title
+          th Author
+          th Genre
+          th Year
+      tbody
+
+        each book in books 
+          tr 
+            td 
+              a(href=`/books/${book.id}`)= book.title
+            td= book.author 
+            td= book.genre
+            td= book.year

@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notNull: {
 						// custom error message
-						msg: 'Please provide a value for "title"',
+						msg: 'Looks like you forgot a title for your book.',
 					},
 					notEmpty: {
 						// custom error message
-						msg: 'Please provide a value for "Title"',
+						msg: 'Looks like you forgot a title for your book.',
 					},
 				},
 			},
@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => {
 				validate: {
 					notNull: {
 						// custom error message
-						msg: 'Please provide a value for "title"',
+						msg: 'Looks like you forgot an author for your book.',
 					},
 					notEmpty: {
 						// custom error message
-						msg: 'Please provide a value for "Title"',
+						msg: 'Looks like you forgot an author for your book.',
 					},
 				},
 			},
