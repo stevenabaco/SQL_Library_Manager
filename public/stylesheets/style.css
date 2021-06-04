@@ -149,6 +149,10 @@ table {
   width: 100%;
 }
 
+.label {
+  color:white;
+}
+
 .index__Book__link:hover {
   background-color: rgba(190, 216, 202, 0.897);
 }

@@ -8,6 +8,7 @@ block content
       if (query)
         a(class="button" href='/') All Books
       form.form__search(action="/books/search" method="get")
+        label.label(for="query") Search 
         input#query(type="search" name="query" value=query)
         input(class="button search" id="submit" type="submit" value="Search")
     br
