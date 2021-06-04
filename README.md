@@ -1,4 +1,4 @@
-# <p align="center">Library Manager - PROJECT 5</p> 
+# <p align="center">Library Manager - Teamtree Project 8</p> 
 
 # <p align="center"><a href="https://teamtreehouse.com/techdegree/full-stack-javascript">TREEHOUSE - FULL STACK </a> TECHDEGREE 👍 </p>
 
