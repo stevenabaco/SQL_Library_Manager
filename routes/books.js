@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const Book = require('../models').Book;
+const { Book } = require('../models'); // Import Book Model from models
+const { Op } = require('sequelize'); // Import Operators from Sequelize for querying database
 
 /* Handler function to wrap each route. */
 function asyncHandler(cb) {
@@ -18,9 +19,15 @@ function asyncHandler(cb) {
 router.get(
 	'/',
 	asyncHandler(async (req, res) => {
-		const books = await Book.findAll({ order: [['createdAt', 'DESC']] });
-		console.log(books.map(book => book.toJSON()));
-		res.render('books/index', { books, title: 'Books' });
+		const page = parseInt((req.query.page) || 1);
+		const { count, rows: books } = await Book.findAndCountAll({
+			limit: 5,
+			offset: page * 5 - 5,
+			order: [['createdAt', 'DESC']],
+		});
+		console.log(count)
+		const totalPages = Math.ceil(count / 5);
+		res.render('books/index', { books, title: 'Books', page, totalPages });
 	})
 );
 

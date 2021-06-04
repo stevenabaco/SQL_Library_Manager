@@ -15,31 +15,8 @@ function asyncHandler(cb) {
 }
 
 /* GET root directory - Redirect to "/books" */
-router.get(
-	'/',
-	asyncHandler(async (req, res, next) => {
-		res.redirect('/books');
-	})
-);
-
-// /* GET books page with list of books */
-// router.get(
-// 	'/books',
-// 	asyncHandler(async (req, res, next) => {
-// 		// const books = await Book.findAll({ order: [['createdAt', 'DESC']] });
-// 		res.render('index');
-// 		// console.log(books.map(book => book.toJSON()));
-// 	})
-// );
-
-// /*GET generated error route - create and throw 500 server error for testing*/
-// router.get('/error', (req, res, next) => {
-// 	// Log out a custom error handler
-// 	console.log('Custom error route was called');
-// 	const err = new Error();
-// 	err.message = `Custom 500 error thrown`;
-// 	err.status = 500;
-// 	throw err;
-// });
+router.get('/', (req, res, next) => {
+	res.redirect('/books');
+});
 
 module.exports = router;
