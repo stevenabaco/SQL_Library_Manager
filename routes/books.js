@@ -26,7 +26,13 @@ router.get(
 			order: [['createdAt', 'DESC']],
 		});
 		const totalPages = Math.ceil(count / 5);
-		res.render('books/index', { books, count, title: 'Books', page, totalPages });
+		res.render('books/index', {
+			books,
+			count,
+			title: 'Books',
+			page,
+			totalPages,
+		});
 	})
 );
 
@@ -41,9 +47,6 @@ router.get(
 			const page = parseInt(req.query.page || 1);
 			const { count, rows: books } = await Book.findAndCountAll({
 				//Query data base for information entered in Search input
-				limit: 5,
-				offset: page * 5 - 5,
-				order: [['createdAt', 'DESC']],
 				where: {
 					[Op.or]: [
 						{ title: { [Op.substring]: query } },
@@ -53,14 +56,12 @@ router.get(
 					],
 				},
 			});
-			const totalPages = Math.ceil(count / 5);
 			res.render('books/index', {
 				books,
 				count,
 				title: 'Books',
 				query,
 				page,
-				totalPages,
 			});
 		}
 	})
@@ -68,7 +69,7 @@ router.get(
 
 /* GET - create a new book form */
 router.get('/new', (req, res) => {
-	res.render('books/new_book', { title: 'Add a New Book' });
+	res.render('books/new-book', { title: 'Add a New Book' });
 });
 
 /* POST - add a book to library */
@@ -83,7 +84,7 @@ router.post(
 			if (error.name === 'SequelizeValidationError') {
 				// check error type
 				book = await Book.build(req.body);
-				res.render('books/new_book', {
+				res.render('books/new-book', {
 					book,
 					errors: error.errors,
 					title: 'New Book',
@@ -98,12 +99,12 @@ router.post(
 /* GET - edit book form - */
 router.get(
 	'/:id',
-	asyncHandler(async (req, res) => {
+	asyncHandler(async (req, res, next) => {
 		const book = await Book.findByPk(req.params.id);
 		if (book) {
-			res.render('books/update_book', { book, title: 'Update a book' });
+			res.render('books/update-book', { book, title: 'Update a book' });
 		} else {
-			res.sendStatus(404);
+			next();
 		}
 	})
 );
@@ -123,15 +124,15 @@ router.post(
 			}
 		} catch (error) {
 			if (error.name === 'SequelizeValidationError') {
+				// check error type
 				book = await Book.build(req.body);
-				book.id = req.params.id;
-				res.render('books/edit', {
+				res.render('books/update-book', {
 					book,
 					errors: error.errors,
-					title: 'Edit Book',
+					title: 'Update this Book',
 				});
 			} else {
-				throw error;
+				res.sendStatus(404);
 			}
 		}
 	})

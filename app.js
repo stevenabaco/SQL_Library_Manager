@@ -25,19 +25,19 @@ app.use('/books', books)
 // app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-app.use((req, res, next) => {
-  res.status(404).render('page-not-found')
+app.use(function (req, res, next) {
+  const error = new Error("Could not find on server");
+  error.status = 404
+  res.render('page-not-found', {error})
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
 	// render the error page
-  if (err.status === 404) {
-    res.status(404).render('page-not-found', { err });
-  } else {
-    err.message = err.message || 'Hmmm... looks like something went wrong!';
-    res.status(err.status || 500).render('error', { err });
+  err.status = (err.status || 500);
+  err.message = (err.message || "Oops there was an error on the server-side");
+  res.render('error', { err });
   }
-});
+);
 
 module.exports = app;
