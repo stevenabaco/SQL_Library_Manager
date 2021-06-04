@@ -5,13 +5,20 @@ block content
     h1.title= title
     .header 
       a#indexCreateNewBook(class="button" href='/books/new') Create New Book
+      if (query)
+        a(class="button" href='/') All Books
       form.form__search(action="/books/search" method="get")
-        label.query(for="query") Search
         input#query(type="search" name="query" value=query)
         input(class="button search" id="submit" type="submit" value="Search")
     br
+    if errors
+        h2.error Oooops! 
+        ul.error
+          each error in errors 
+            li
+              h2= error.message 
     if(query)
-      h3 Results for #{query}
+      h2 Results for #{query}
     table
       thead
         tr 
@@ -29,16 +36,16 @@ block content
             td= book.year
     br
     if (totalPages)
-    ul.pagination
-      .pagination__controls
-        li &laquo;
-        - var n = 1;
-        while n < `${totalPages + 1}`
-          li
-            if n == page
-              a(class="active" href=`/books?page=${n}`)= n
-            else 
-              a(href=`/books?page=${n}`)= n
-          - ++n
-         
-        li &raquo;
+      ul.pagination
+        .pagination__controls
+          li &laquo;
+          - var n = 1;
+          while n < `${totalPages + 1}`
+            li
+              if n == page
+                a(class="active" href=`/books?page=${n}`)= n
+              else 
+                a(href=`/books?page=${n}`)= n
+            - ++n
+          
+          li &raquo;

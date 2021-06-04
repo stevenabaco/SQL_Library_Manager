@@ -19,28 +19,51 @@ function asyncHandler(cb) {
 router.get(
 	'/',
 	asyncHandler(async (req, res) => {
-		const page = parseInt((req.query.page) || 1);
+		const page = parseInt(req.query.page || 1);
 		const { count, rows: books } = await Book.findAndCountAll({
 			limit: 5,
 			offset: page * 5 - 5,
 			order: [['createdAt', 'DESC']],
 		});
-		console.log(count)
 		const totalPages = Math.ceil(count / 5);
 		res.render('books/index', { books, title: 'Books', page, totalPages });
 	})
 );
 
-// /* GET - Details of individual book */
-
-// router.get('/:id', asyncHandler(async (req, res) => {
-//   const book = await Book.findByPk(req.params.id);
-//   if (book) {
-// 		res.render('books/update_book', { book, title: 'Update a book' });
-// 	} else {
-// 		res.sendStatus(404);
-// 	}
-// }))
+/* GET - Find books from search listing*/
+router.get(
+	'/search',
+	asyncHandler(async (req, res, next) => {
+		if (req.query.query === '') {
+			res.redirect('/');
+		} else {
+			const query = req.query.query;
+			const page = parseInt(req.query.page || 1);
+			const { count, rows: books } = await Book.findAndCountAll({
+				limit: 5,
+				offset: page * 5 - 5,
+				order: [['createdAt', 'DESC']],
+				where: {
+					[Op.or]: [
+						{ title: { [Op.substring]: query } },
+						{ author: { [Op.substring]: query } },
+						{ genre: { [Op.substring]: query } },
+						{ year: { [Op.eq]: query } },
+					],
+				},
+			});
+			const totalPages = Math.ceil(count / 5);
+			console.log(totalPages);
+			res.render('books/index', {
+				books,
+				title: 'Books',
+				query,
+				page,
+				totalPages,
+			});
+		}
+	})
+);
 
 /* GET - create a new book form */
 router.get('/new', (req, res) => {
@@ -48,24 +71,28 @@ router.get('/new', (req, res) => {
 });
 
 /* POST - add a book to library */
-router.post('/new', asyncHandler(async (req, res) => {
-  let book;
-  try {
-    book = await Book.create(req.body);
-    res.redirect('/')
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {   // check error type
-      book = await Book.build(req.body);
-			res.render('books/new_book', {
-        book,
-        errors: error.errors,
-        title: 'New Book',
-      })
-    } else {
-      throw error; // error caught in the asyncHandler's catch block
-    }
-  }
-}))
+router.post(
+	'/new',
+	asyncHandler(async (req, res) => {
+		let book;
+		try {
+			book = await Book.create(req.body);
+			res.redirect('/');
+		} catch (error) {
+			if (error.name === 'SequelizeValidationError') {
+				// check error type
+				book = await Book.build(req.body);
+				res.render('books/new_book', {
+					book,
+					errors: error.errors,
+					title: 'New Book',
+				});
+			} else {
+				throw error; // error caught in the asyncHandler's catch block
+			}
+		}
+	})
+);
 
 /* GET - edit book form - */
 router.get(
@@ -111,14 +138,15 @@ router.post(
 
 /* POST - delete individual article */
 router.post(
-  '/:id/delete', asyncHandler(async (req, res) => {
-    const book = await Book.findByPk(req.params.id);
-    if (book) {
-      await book.destroy();
-      res.redirect('/');
-    } else {
-      res.sendStatus(404);
-    }
-  })
-)
+	'/:id/delete',
+	asyncHandler(async (req, res) => {
+		const book = await Book.findByPk(req.params.id);
+		if (book) {
+			await book.destroy();
+			res.redirect('/');
+		} else {
+			res.sendStatus(404);
+		}
+	})
+);
 module.exports = router;
