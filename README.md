@@ -4,17 +4,17 @@
 
 ## PROJECT OVERVIEW
 
-For this project I had to build an app for a fictional company called "Awesome Startup". The employees are distributed accross the United States and the company wanted a web app to be able to list all the employees and share contact information with each other. 
+Library Manager is an app which can be used by a Library to help them manage their collection of books. It uses an SQLlite database to store the books data. The library provides a nice UI and UX to display the books as well as magane the books.
 
-To build the database we had to use a public API to grab the information for 12 random employees, and use that information to build a prototype for the employee directory web app.
+It allows the user to Add new Books, Edit the information for an existing book and Delete a book, all in a very intuitive way.
 
-## EXTRA FEATURES AND CUSTOMIZATION
+## EXTRA FEATURES AND CUSTOMIZATION FOR EXCEEDS EXPECTATIONS
 
 <ul>
-  <li>Added dynamic search as keys are entered instead of using submit</li>
-  <li>Changed background color to be a darker grey since the trend seems to be more towards "dark mode" style.</li>
-  <li>Adjusted heading title to be white with a soft blue glow</li>
-  <li>Added popup effect with shadow on hover for cards</li>
+  <li>Added pagination feature to just show 5 books at a time</li>
+  <li>Added Search feature which can look up info in any field</li>
+  <li>Added significant additional CSS styling to UI for the UX</li>
+  <li>Added a nice image for the background</li>
   <li>Added rounding of corners effect of pop up for cards</li>
 </ul>
 
@@ -23,6 +23,8 @@ To build the database we had to use a public API to grab the information for 12 
   <li>HTML</li>
   <li>CSS</li>
   <li>Javascript</li>
+  <li>SQLite</>
+  <li>Sequilize</>
 </ul>
 
 
