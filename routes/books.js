@@ -26,7 +26,7 @@ router.get(
 			order: [['createdAt', 'DESC']],
 		});
 		const totalPages = Math.ceil(count / 5);
-		res.render('books/index', { books, title: 'Books', page, totalPages });
+		res.render('books/index', { books, count, title: 'Books', page, totalPages });
 	})
 );
 
@@ -40,6 +40,7 @@ router.get(
 			const query = req.query.query;
 			const page = parseInt(req.query.page || 1);
 			const { count, rows: books } = await Book.findAndCountAll({
+				//Query data base for information entered in Search input
 				limit: 5,
 				offset: page * 5 - 5,
 				order: [['createdAt', 'DESC']],
@@ -53,9 +54,9 @@ router.get(
 				},
 			});
 			const totalPages = Math.ceil(count / 5);
-			console.log(totalPages);
 			res.render('books/index', {
 				books,
+				count,
 				title: 'Books',
 				query,
 				page,
