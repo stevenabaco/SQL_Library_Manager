@@ -118,10 +118,8 @@ router.post(
 			book = await Book.findByPk(req.params.id);
 				await book.update(req.body);
 				res.redirect('/');
-		} catch (error) {
+		} catch (error) {		// check error type
 			if (error.name === 'SequelizeValidationError') {
-				// check error type
-				// book = await Book.build(req.body);
 				res.render('books/update-book', {
 					book,
 					errors: error.errors,
