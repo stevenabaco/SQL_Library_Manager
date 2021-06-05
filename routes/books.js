@@ -116,23 +116,19 @@ router.post(
 		let book;
 		try {
 			book = await Book.findByPk(req.params.id);
-			if (book) {
 				await book.update(req.body);
-				res.redirect('/books');
-			} else {
-				res.sendStatus(404);
-			}
+				res.redirect('/');
 		} catch (error) {
 			if (error.name === 'SequelizeValidationError') {
 				// check error type
-				book = await Book.build(req.body);
+				// book = await Book.build(req.body);
 				res.render('books/update-book', {
 					book,
 					errors: error.errors,
 					title: 'Update this Book',
 				});
 			} else {
-				res.sendStatus(404);
+				throw error;
 			}
 		}
 	})
@@ -147,7 +143,7 @@ router.post(
 			await book.destroy();
 			res.redirect('/');
 		} else {
-			res.sendStatus(404);
+			next()
 		}
 	})
 );
